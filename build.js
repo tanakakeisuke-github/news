@@ -24,7 +24,7 @@ function fetchURL(url, redirects = 0) {
     const mod = url.startsWith("https") ? https : http;
     const req = mod.get(url, {
       timeout: 15000,
-      headers: { "User-Agent": "BulknewsBot/1.0", Accept: "application/rss+xml, application/atom+xml, text/xml, */*" },
+      headers: { "User-Agent": "toal newsBot/1.0", Accept: "application/rss+xml, application/atom+xml, text/xml, */*" },
     }, (res) => {
       if ([301,302,303,307,308].includes(res.statusCode) && res.headers.location) {
         return resolve(fetchURL(new URL(res.headers.location, url).href, redirects + 1));
@@ -142,7 +142,7 @@ function buildHTML(results) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Bulknews - ${d}</title>
+<title>toal news - ${d}</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'MS PGothic','Osaka','ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro',sans-serif;font-size:12px;line-height:1.6;color:#000;background:#fff}
@@ -174,12 +174,12 @@ table{width:100%;border-collapse:collapse}
 </head>
 <body>
 <div class="w">
-<table class="hd"><tr><td class="ht"><a href="." class="lg">Bulknews</a></td></tr><tr><td class="hm"><b>Last Update:</b> ${esc(t)} &nbsp; <b># of articles:</b> ${total}</td></tr></table>
-<table class="sc"><tr><td class="sh">about Bulknews</td></tr><tr><td class="ab"><b>Bulknews</b>は、ニュースジャンキーのためのサイトです。GitHub Actionsにより30分ごとにRSSフィードを取得し、静的HTMLとしてデプロイしています。</td></tr></table>
+<table class="hd"><tr><td class="ht"><a href="." class="lg">toal news</a></td></tr><tr><td class="hm"><b>Last Update:</b> ${esc(t)} &nbsp; <b># of articles:</b> ${total}</td></tr></table>
+<table class="sc"><tr><td class="sh">about toal news</td></tr><tr><td class="ab"><b>toal news</b>は、ニュースジャンキーのためのサイトです。GitHub Actionsにより30分ごとにRSSフィードを取得し、静的HTMLとしてデプロイしています。</td></tr></table>
 <div class="db"><b>${esc(d)}のニュース</b></div>
 <table class="sc"><tr><td class="nv">${nav}</td></tr></table>
 ${secs}
-<table class="sc"><tr><td class="ft"><b>Bulknews Clone</b> ver. 1.0 / GitHub Actions + Pages / Built at ${esc(t)}</td></tr></table>
+<table class="sc"><tr><td class="ft"><b>toal news Clone</b> ver. 1.0 / GitHub Actions + Pages / Built at ${esc(t)}</td></tr></table>
 </div>
 </body>
 </html>`;
@@ -187,7 +187,7 @@ ${secs}
 
 // ===== メイン =====
 async function main() {
-  console.log("=== Bulknews Builder ===");
+  console.log("=== toal news Builder ===");
   const results = await Promise.all(SOURCES.map(fetchSource));
   const html = buildHTML(results);
   const out = path.join(__dirname, "public");
