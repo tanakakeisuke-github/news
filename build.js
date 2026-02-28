@@ -5,6 +5,7 @@ const path = require("path");
 
 // ===== ニュースソース =====
 const SOURCES = [
+  { id: "designboom", name: "designboom", url: "https://www.designboom.com/", rss: "https://www.designboom.com/feed/", translate: true },
   { id: "nhk", name: "NHKニュース", url: "https://www3.nhk.or.jp/news/", rss: "https://www3.nhk.or.jp/rss/news/cat0.xml" },
   { id: "itmedia", name: "ITmedia", url: "https://www.itmedia.co.jp/", rss: "https://rss.itmedia.co.jp/rss/2.0/itmedia_all.xml" },
   { id: "gigazine", name: "GIGAZINE", url: "https://gigazine.net/", rss: "https://gigazine.net/news/rss_2.0/" },
@@ -14,9 +15,44 @@ const SOURCES = [
   { id: "hatena", name: "はてなブックマーク IT", url: "https://b.hatena.ne.jp/hotentry/it", rss: "https://b.hatena.ne.jp/hotentry/it.rss" },
   { id: "publickey", name: "Publickey", url: "https://www.publickey1.jp/", rss: "https://www.publickey1.jp/atom.xml" },
   { id: "nikkansports", name: "nikkansports.com", url: "https://www.nikkansports.com/", rss: "https://www.nikkansports.com/rss/nikkansports_all.rdf" },
-  { id: "designboom", name: "designboom", url: "https://www.designboom.com/", rss: "https://www.designboom.com/feed/" },
   { id: "techcrunch", name: "TechCrunch Japan", url: "https://jp.techcrunch.com/", rss: "https://jp.techcrunch.com/feed/" },
 ];
+
+
+// ===== 翻訳（Google Translate 無料エンドポイント） =====
+function translateText(text, from = "en", to = "ja") {
+  return new Promise((resolve, reject) => {
+    const encoded = encodeURIComponent(text);
+    const tUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${from}&tl=${to}&dt=t&q=${encoded}`;
+    https.get(tUrl, { headers: { "User-Agent": "Mozilla/5.0" } }, (res) => {
+      const chunks = [];
+      res.on("data", (c) => chunks.push(c));
+      res.on("end", () => {
+        try {
+          const body = Buffer.concat(chunks).toString("utf-8");
+          const json = JSON.parse(body);
+          const translated = json[0].map(s => s[0]).join("");
+          resolve(translated);
+        } catch (e) {
+          resolve(text);
+        }
+      });
+    }).on("error", () => resolve(text));
+  });
+}
+
+async function translateArticles(articles) {
+  const results = [];
+  for (const a of articles) {
+    try {
+      const translated = await translateText(a.title);
+      results.push({ ...a, title: translated, originalTitle: a.title });
+    } catch {
+      results.push(a);
+    }
+  }
+  return results;
+}
 
 // ===== HTTP fetch（依存なし）=====
 function fetchURL(url, redirects = 0) {
@@ -110,6 +146,10 @@ async function fetchSource(src) {
     let arts = parseArticles(xml);
     const recent = arts.filter(a => isRecent(a.date, 48));
     arts = (recent.length > 0 ? recent : arts.slice(0, 20)).slice(0, 25);
+    if (src.translate) {
+      console.log(`  → translating ${arts.length} articles...`);
+      arts = await translateArticles(arts);
+    }
     console.log(`    → ${arts.length} articles`);
     return { ...src, articles: arts, error: null };
   } catch (e) {
@@ -132,9 +172,10 @@ function buildHTML(results) {
       ? `<span class="dm">⚠ 取得失敗: ${esc(r.error)}</span>`
       : r.articles.length === 0
         ? `<span class="dm">記事なし</span>`
-        : r.articles.map(a =>
-            `<div class="rw"><span class="bl">■</span> <a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.title)}</a> <a href="https://www.google.co.jp/search?q=cache:${esc(a.url)}" target="_blank" rel="noopener" class="ut">[G]</a> <a href="https://web.archive.org/web/*/${esc(a.url)}" target="_blank" rel="noopener" class="ut">[WB]</a></div>`
-          ).join("\n");
+        : r.articles.map(a => {
+            const origPart = a.originalTitle ? ` <span class="og">[${esc(a.originalTitle)}]</span>` : "";
+            return `<div class="rw"><span class="bl">■</span> <a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.title)}</a>${origPart} <a href="https://www.google.co.jp/search?q=cache:${esc(a.url)}" target="_blank" rel="noopener" class="ut">[G]</a> <a href="https://web.archive.org/web/*/${esc(a.url)}" target="_blank" rel="noopener" class="ut">[WB]</a></div>`;
+          }).join("\n");
     return `<table class="sc" id="${r.id}"><tr><td class="sh"><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.name)}</a> <a href="${esc(r.rss)}" target="_blank" rel="noopener" class="xm">[XML]</a></td></tr><tr><td class="sb">${body}</td></tr></table>`;
   }).join("\n");
 
@@ -167,7 +208,7 @@ table{width:100%;border-collapse:collapse}
 .rw a{color:#039;font-size:12px}
 .rw a:visited{color:#609}
 .ut{color:#999!important;text-decoration:none!important;font-size:10px!important}
-.dm{color:#999;font-size:11px;font-style:italic}
+.og{color:#999;font-size:10px;font-style:italic}\n.dm{color:#999;font-size:11px;font-style:italic}
 .db{text-align:center;padding:6px 0;font-size:13px;border-bottom:1px solid #ccc;margin-bottom:8px}
 .ft{background:#eee;font-size:10px;color:#666;text-align:center;padding:4px}
 @media(max-width:600px){.w{padding:4px}.rw a{font-size:13px;line-height:1.8}.sb{padding:8px}}
@@ -189,7 +230,10 @@ ${secs}
 // ===== メイン =====
 async function main() {
   console.log("=== toal news Builder ===");
-  const results = await Promise.all(SOURCES.map(fetchSource));
+  const results = [];
+  for (const src of SOURCES) {
+    results.push(await fetchSource(src));
+  }
   const html = buildHTML(results);
   const out = path.join(__dirname, "public");
   if (!fs.existsSync(out)) fs.mkdirSync(out, { recursive: true });
