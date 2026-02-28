@@ -14,8 +14,6 @@ const SOURCES = [
   { id: "zenn", name: "Zenn", url: "https://zenn.dev/", rss: "https://zenn.dev/feed" },
   { id: "hatena", name: "はてなブックマーク IT", url: "https://b.hatena.ne.jp/hotentry/it", rss: "https://b.hatena.ne.jp/hotentry/it.rss" },
   { id: "publickey", name: "Publickey", url: "https://www.publickey1.jp/", rss: "https://www.publickey1.jp/atom.xml" },
-  { id: "nikkansports", name: "nikkansports.com", url: "https://www.nikkansports.com/", rss: "https://www.nikkansports.com/rss/nikkansports_all.rdf" },
-  { id: "techcrunch", name: "TechCrunch Japan", url: "https://jp.techcrunch.com/", rss: "https://jp.techcrunch.com/feed/" },
 ];
 
 
