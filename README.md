@@ -1,18 +1,18 @@
-# Bulknews Clone
+# toal news Clone
 
-[Bulknews](https://bulknews.net/) クローン。GitHub Actions で30分ごとにRSSフィードを取得し、静的HTMLとして GitHub Pages にデプロイします。
+[toal news](https://toal news.net/) クローン。GitHub Actions で30分ごとにRSSフィードを取得し、静的HTMLとして GitHub Pages にデプロイします。
 
 ## セットアップ
 
 ### 1. リポジトリ作成
 
 ```bash
-git init bulknews
-cd bulknews
+git init toal news
+cd toal news
 # このプロジェクトのファイルをコピー
 git add .
 git commit -m "initial commit"
-git remote add origin https://github.com/YOUR_NAME/bulknews.git
+git remote add origin https://github.com/YOUR_NAME/toal news.git
 git push -u origin main
 ```
 
@@ -25,7 +25,7 @@ git push -u origin main
 
 - push すると自動でビルド＆デプロイされます
 - 以降 **30分ごと** に自動更新されます
-- `https://YOUR_NAME.github.io/bulknews/` でアクセス
+- `https://YOUR_NAME.github.io/toal news/` でアクセス
 
 ## ローカルで実行
 
@@ -63,7 +63,7 @@ schedule:
 ## 構成
 
 ```
-bulknews/
+toal news/
 ├── build.js                      # RSS取得 → HTML生成
 ├── package.json
 ├── .github/workflows/build.yml   # GitHub Actions定義
