@@ -14,6 +14,7 @@ const SOURCES = [
   { id: "hatena", name: "はてなブックマーク IT", url: "https://b.hatena.ne.jp/hotentry/it", rss: "https://b.hatena.ne.jp/hotentry/it.rss" },
   { id: "publickey", name: "Publickey", url: "https://www.publickey1.jp/", rss: "https://www.publickey1.jp/atom.xml" },
   { id: "nikkansports", name: "nikkansports.com", url: "https://www.nikkansports.com/", rss: "https://www.nikkansports.com/rss/nikkansports_all.rdf" },
+  { id: "designboom", name: "designboom", url: "https://www.designboom.com/", rss: "https://www.designboom.com/feed/" },
   { id: "techcrunch", name: "TechCrunch Japan", url: "https://jp.techcrunch.com/", rss: "https://jp.techcrunch.com/feed/" },
 ];
 
