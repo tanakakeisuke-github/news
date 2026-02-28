@@ -1,0 +1,10 @@
+{
+  "name": "bulknews",
+  "version": "1.0.0",
+  "description": "Bulknews clone - RSS aggregator built with GitHub Actions",
+  "scripts": {
+    "build": "node build.js"
+  },
+  "dependencies": {}
+
+}
