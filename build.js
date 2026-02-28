@@ -76,7 +76,7 @@ function fetchURL(url, redirects = 0) {
 
 // ===== 軽量XMLパーサ =====
 function decodeEntities(s) {
-  return s.replace(/&amp;/g,"&").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&quot;/g,'"').replace(/&#39;|&apos;/g,"'").replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g,"$1");
+  return s.replace(/&amp;/g,"&").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&quot;/g,'"').replace(/&#39;|&apos;/g,"'").replace(/&#x([0-9a-fA-F]+);/g,(_,c)=>String.fromCodePoint(parseInt(c,16))).replace(/&#(\d+);/g,(_,c)=>String.fromCodePoint(parseInt(c,10))).replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g,"$1");
 }
 function cleanText(s) {
   return decodeEntities(s).replace(/<[^>]+>/g,"").replace(/\s+/g," ").trim();
