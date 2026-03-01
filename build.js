@@ -145,6 +145,8 @@ async function fetchSource(src) {
     let arts = parseArticles(xml);
     const recent = arts.filter(a => isRecent(a.date, 48));
     arts = (recent.length > 0 ? recent : arts.slice(0, 20)).slice(0, 25);
+        // Google Trends: replace feed URL with Google search URL
+        arts = arts.map(a => a.url.includes("/trending/rss") ? { ...a, url: "https://www.google.co.jp/search?q=" + encodeURIComponent(a.title) } : a);
     if (src.translate) {
       console.log(`  → translating ${arts.length} articles...`);
       arts = await translateArticles(arts);
