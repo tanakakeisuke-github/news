@@ -9,6 +9,7 @@ const SOURCES = [
   { id: "nhk", name: "NHKニュース", url: "https://www3.nhk.or.jp/news/", rss: "https://www3.nhk.or.jp/rss/news/cat0.xml" },
   { id: "itmedia", name: "ITmedia", url: "https://www.itmedia.co.jp/", rss: "https://rss.itmedia.co.jp/rss/2.0/itmedia_all.xml" },
   { id: "gigazine", name: "GIGAZINE", url: "https://gigazine.net/", rss: "https://gigazine.net/news/rss_2.0/" },
+  { id: "cnet_us", name: "CNET", url: "https://www.cnet.com/", rss: "https://www.cnet.com/rss/news/", translate: true },
   { id: "cnet", name: "CNET Japan", url: "https://japan.cnet.com/", rss: "https://japan.cnet.com/rss/index.rdf" },
   { id: "impress", name: "Impress Watch", url: "https://www.watch.impress.co.jp/", rss: "https://www.watch.impress.co.jp/data/rss/1.0/ipw/feed.rdf" },
   { id: "zenn", name: "Zenn", url: "https://zenn.dev/", rss: "https://zenn.dev/feed" },
