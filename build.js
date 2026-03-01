@@ -14,6 +14,7 @@ const SOURCES = [
   { id: "zenn", name: "Zenn", url: "https://zenn.dev/", rss: "https://zenn.dev/feed" },
   { id: "hatena", name: "はてなブックマーク IT", url: "https://b.hatena.ne.jp/hotentry/it", rss: "https://b.hatena.ne.jp/hotentry/it.rss" },
   { id: "publickey", name: "Publickey", url: "https://www.publickey1.jp/", rss: "https://www.publickey1.jp/atom.xml" },
+  { id: "google_trends", name: "Google Trends", url: "https://trends.google.co.jp/trending?geo=JP", rss: "https://trends.google.co.jp/trending/rss?geo=JP" },
 ];
 
 
